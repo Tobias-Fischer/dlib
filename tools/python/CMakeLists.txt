@@ -35,7 +35,7 @@ if (MSVC)
     include(${CMAKE_CURRENT_LIST_DIR}/../../dlib/cmake_utils/tell_visual_studio_to_use_static_runtime.cmake)
 endif()
 
-add_subdirectory(../../dlib/external/pybind11 pybind11_build)
+find_package(pybind11 REQUIRED)
 add_subdirectory(../../dlib dlib_build)
 
 add_definitions(-DDLIB_VERSION=${DLIB_VERSION})
