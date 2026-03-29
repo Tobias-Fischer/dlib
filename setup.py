@@ -183,16 +183,13 @@ class CMakeBuild(build_ext):
                 cmake_args_dict[key] = value
         cmake_args = ['-D' + key + '=' + str(value) for key, value in cmake_args_dict.items()]
         cmake_args += cmake_extra_options
+        cmake_args += os.environ.get("DLIB_CMAKE_ARGS", "").strip().splitlines()
 
         cfg = 'Debug' if self.debug else 'Release'
         build_args = ['--config', cfg]
 
         if platform.system() == "Windows":
             cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(cfg.upper(), extdir)]
-            if sys.maxsize > 2**32:
-                cmake_args += ['-A', 'x64']
-            # Do a parallel build
-            build_args += ['--', '/m']
         else:
             cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg]
             # Do a parallel build
